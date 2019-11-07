@@ -24,6 +24,11 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.ErrorProneFlags;
 import com.google.errorprone.bugpatterns.apidiff.ApiDiff.ClassMemberKey;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -56,6 +61,30 @@ public class AndroidJdkLibsChecker extends ApiDiffChecker {
   }
 
   private static ApiDiff deriveApiDiff(boolean allowJava8) {
+// ******* for print stack trace ******
+try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/stream_method_stacktrace.txt").toFile(), true);
+	OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF-8"));
+	BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
+	String projectNameString = "errorprone";
+	final StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
+	bufferedWriter.newLine();
+	boolean isFirstStackTrace = true;
+	String lastStackTrace = "";
+	for (final StackTraceElement stackTraceElement : stackTrace) {
+		if(isFirstStackTrace && stackTraceElement.toString().contains(projectNameString)) {
+			bufferedWriter.append(stackTraceElement.toString());
+			bufferedWriter.newLine();
+			isFirstStackTrace = false;
+		} else if(!(isFirstStackTrace) && stackTraceElement.toString().contains(projectNameString)) {
+			lastStackTrace = stackTraceElement.toString();
+		}
+	}
+	bufferedWriter.append(lastStackTrace);
+	bufferedWriter.newLine();
+} catch (Exception e) {
+	e.printStackTrace();
+}
+// ************************************
     ClassSupportInfo support = new ClassSupportInfo(allowJava8);
     ImmutableSet<String> unsupportedClasses =
         ImmutableSet.<String>builder()

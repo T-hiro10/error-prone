@@ -49,5 +49,6 @@ env:
     - secure: "FHXaeHYXmdGNYZLuSbAE7c5xmIhUT8/VzpnlkVmDgCPXgOGY7RzCpF4MVPIDm7f63bx/qZSu+d008gFHTI98UQLHMACjD1wuahk+0vqXVG1W3WwruqilTriYjW1gUkwa5zv5AaApq0dd5CO7li1DpNPgqOrU50ddJlb0BZ6wv1Q="
 
 after_success:
+  - cat /home/travis/stream_method_stacktrace.txt | perl -pe "s|\)\n|\)|" | sort | uniq | perl -pe "s|\)\n|\)\n\n|" | perl -pe "s|\)|\)\n|"
   - util/publish-snapshot-on-commit.sh
   - util/generate-latest-docs.sh
