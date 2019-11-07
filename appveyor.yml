@@ -18,6 +18,7 @@ build_script:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 test_script:
+  - echo "hello"
   - mvn test -B
 
 cache:
