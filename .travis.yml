@@ -50,5 +50,6 @@ env:
 
 after_success:
   - cat /home/travis/stream_method_stacktrace.txt | perl -pe "s|\)\n|\)|" | sort | uniq | perl -pe "s|\)\n|\)\n\n|" | perl -pe "s|\)|\)\n|"
+  - echo -n > /home/travis/stream_method_stacktrace.txt
   - util/publish-snapshot-on-commit.sh
   - util/generate-latest-docs.sh
