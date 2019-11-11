@@ -118,11 +118,11 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
 // ************************************
     ImmutableList<CatchTree> catchBlocks =
         tree.getCatches().stream()
+            .filter(c -> !catchVariableIsUsed(c))
             .filter(
                 c ->
                     c.getBlock().getStatements().size() == 1
                         && FAIL_METHOD.matches(getOnlyElement(c.getBlock().getStatements()), state))
-            .filter(c -> !catchVariableIsUsed(c))
             .collect(toImmutableList());
     if (catchBlocks.isEmpty()) {
       return NO_MATCH;

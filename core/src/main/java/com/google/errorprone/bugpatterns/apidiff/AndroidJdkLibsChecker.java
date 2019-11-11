@@ -90,8 +90,8 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
         ImmutableSet.<String>builder()
             .addAll(
                 Java7ApiChecker.API_DIFF.unsupportedClasses().stream()
-                    .filter(cls -> !support.allowedPackages.contains(packageName(cls)))
                     .filter(cls -> !support.allowedClasses.contains(cls))
+                    .filter(cls -> !support.allowedPackages.contains(packageName(cls)))
                     .collect(Collectors.toSet()))
             .addAll(support.bannedClasses)
             .build();

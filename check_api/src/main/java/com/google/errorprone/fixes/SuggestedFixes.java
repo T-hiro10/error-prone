@@ -457,8 +457,8 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
                 /* Throw away generated members, which may be synthetic, or whose start
                 position may be the same as the class's. We only want to look at members defined
                 in the source, so we can find a source position which is after the opening {.*/
-                .filter(AdditionPosition::definedInSourceFile)
                 .filter(member -> ((JCTree) member).getStartPosition() > classStart)
+                .filter(AdditionPosition::definedInSourceFile)
                 .collect(toImmutableList());
         if (members.isEmpty()) {
           // The approach for inserting first only works if there's a member, but if not then LAST

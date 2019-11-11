@@ -100,8 +100,8 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
 }
 // ************************************
     return constructorsIn(exploringConstructor.getEnclosingElement().getEnclosedElements()).stream()
-        .filter(constructor -> hasAnyOfAnnotation(constructor, annotations))
         .sorted(Comparator.comparing((e -> e.getSimpleName().toString())))
+        .filter(constructor -> hasAnyOfAnnotation(constructor, annotations))
         .collect(toImmutableList());
   }
 
